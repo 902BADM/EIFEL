@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de usuario</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef4ff, #dce8ff);
+      color: #1f2937;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      padding: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 35px rgba(31, 41, 55, .15);
+    }
+    h1 { margin: 0 0 8px; color: #163d75; font-size: 28px; }
+    .intro { margin: 0 0 24px; color: #64748b; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .full { grid-column: 1 / -1; }
+    label { font-weight: 600; font-size: 14px; }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    input:focus, select:focus { outline: 2px solid #76a9fa; border-color: #2563eb; }
+    .terms { display: flex; gap: 8px; align-items: flex-start; margin: 20px 0; font-size: 13px; color: #475569; }
+    .terms input { width: auto; margin-top: 2px; }
+    button {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    #mensaje { min-height: 20px; margin-top: 16px; text-align: center; font-weight: 600; }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .full { grid-column: auto; } .card { padding: 24px; } }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Crear cuenta</h1>
+    <p class="intro">Completa tus datos para registrarte.</p>
+    <form id="registroForm" novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="given-name" required>
+        </div>
+        <div class="field">
+          <label for="apellido">Apellido</label>
+          <input id="apellido" name="apellido" type="text" autocomplete="family-name" required>
+        </div>
+        <div class="field full">
+          <label for="correo">Correo electrónico</label>
+          <input id="correo" name="correo" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="usuario">Usuario</label>
+          <input id="usuario" name="usuario" type="text" minlength="4" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="rol">Rol</label>
+          <select id="rol" name="rol" required>
+            <option value="">Selecciona un rol</option>
+            <option value="usuario">Usuario</option>
+            <option value="administrador">Administrador</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="contrasena">Contraseña</label>
+          <input id="contrasena" name="contrasena" type="password" minlength="8" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label for="confirmacion">Confirmar contraseña</label>
+          <input id="confirmacion" name="confirmacion" type="password" autocomplete="new-password" required>
+        </div>
+      </div>
+      <label class="terms"><input id="terminos" type="checkbox" required> Acepto los términos y condiciones.</label>
+      <button type="submit">Registrarme</button>
+      <div id="mensaje" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+  <script>
+    document.getElementById('registroForm').addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      const formulario = evento.currentTarget;
+      const mensaje = document.getElementById('mensaje');
+      const contrasena = document.getElementById('contrasena').value;
+      const confirmacion = document.getElementById('confirmacion').value;
+      if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+      }
+      if (contrasena !== confirmacion) {
+        mensaje.textContent = 'Las contraseñas no coinciden.';
+        mensaje.style.color = '#dc2626';
+        return;
+      }
+      mensaje.textContent = 'Registro completado correctamente.';
+      mensaje.style.color = '#15803d';
+      formulario.reset();
+    });
+  </script>
+</body>
+</html>
